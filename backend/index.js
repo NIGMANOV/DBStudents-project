@@ -3,11 +3,14 @@ import dotenv from "dotenv";
 import sequelize from "./config/sequelize.config.js";
 import User from "./models/user.model.js";
 import routerUser from "./routes/user.route.js";
+import swaggerDocs from "./config/swagger.config.js";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use("/api/user", routerUser);
+
+swaggerDocs(app)
 
 app.listen(process.env.PORT, async () => {
   try {
