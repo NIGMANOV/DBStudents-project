@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import { sendOtpEmail } from "../utils/nodemailer.utils.js";
 import generateOTP from "../utils/otp.util.js";
 
 class UserControllers {
@@ -16,6 +17,8 @@ class UserControllers {
       }
 
       const otpCode = generateOTP();
+
+      sendOtpEmail(email, otpCode); // Отправка OTP на почту
 
       const userFormData = {
         first_name,
