@@ -1,12 +1,20 @@
 import User from "../models/user.model.js";
 import { sendOtpEmail } from "../utils/nodemailer.utils.js";
 import generateOTP from "../utils/otp.util.js";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+dotenv.config();
 
 class UserControllers {
   // Функция отвечает за создания нового пользователя
   async create(req, res) {
     try {
       const { first_name, last_name, email, password } = req.body;
+
+      const hashedPassword = await bcrypt.hash(
+        password,
+        Number(process.env.SALT_ROUNDS)
+      );
 
       const candidate = await User.findOne({ where: { email } });
 
@@ -24,7 +32,7 @@ class UserControllers {
         first_name,
         last_name,
         email,
-        password,
+        password: hashedPassword,
         otp: otpCode,
       };
 
@@ -75,7 +83,9 @@ class UserControllers {
         return res.status(409).json({ message: "Пароль или email не верны" });
       }
 
-      if (candidate.password !== password) {
+      const isMatch = await bcrypt.compare(password, candidate.password);
+
+      if (!isMatch) {
         return res.status(409).json({ message: "Пароль или email не верны" });
       }
 
