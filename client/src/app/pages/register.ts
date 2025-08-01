@@ -1,6 +1,6 @@
 export function renderRegister(root: HTMLElement) {
   root.innerHTML = `
-    <div class="min-h-screen flex items-center justify-center  bg-white">
+    <div class="min-h-screen flex items-center justify-center bg-white">
       <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
         <h1 class="text-2xl font-bold text-center mb-6 text-green-600">Регистрация</h1>
         <form id="registerForm" class="space-y-4">
@@ -37,8 +37,11 @@ export function renderRegister(root: HTMLElement) {
       });
 
       if (res.ok) {
-        window.history.pushState({}, "", "/otp");
-        window.dispatchEvent(new Event("popstate"));
+        alert("Вы прошли успешную регистрацию, проверьте почту на OTP");
+        setTimeout(() => {
+          window.history.pushState({}, "", "/otp");
+          window.dispatchEvent(new Event("popstate"));
+        }, 1500);
       } else {
         alert("Ошибка регистрации");
       }

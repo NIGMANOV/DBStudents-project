@@ -1,6 +1,6 @@
 export function renderOtp(root: HTMLElement) {
   root.innerHTML = `
-    <div class="min-h-screen flex items-center justify-center  bg-white">
+    <div class="min-h-screen flex items-center justify-center bg-white">
       <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
         <h1 class="text-2xl font-bold text-center mb-6 text-yellow-600">Введите код OTP</h1>
         <form id="otpForm" class="space-y-4">
@@ -29,8 +29,11 @@ export function renderOtp(root: HTMLElement) {
       });
 
       if (res.ok) {
-        window.history.pushState({}, "", "/home");
-        window.dispatchEvent(new Event("popstate"));
+        alert("Успешная верификация!");
+        setTimeout(() => {
+          window.history.pushState({}, "", "/");
+          window.dispatchEvent(new Event("popstate"));
+        }, 1500); 
       } else {
         alert("Неверный код OTP");
       }
